@@ -12,13 +12,11 @@ class Token(models.Model):
         on_delete=models.CASCADE,
         primary_key=True
     )
-    key = models.CharField(max_length=36)
+    key = models.CharField(max_length=36, unique=True)
 
 
 def generate_token():
     hash_str = str(uuid4())
-    while Token.objects.filter(key=hash_str):
-        hash_str = str(uuid4())
     return hash_str
 
 
