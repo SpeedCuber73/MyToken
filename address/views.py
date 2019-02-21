@@ -8,6 +8,7 @@ from rest_framework.status import HTTP_403_FORBIDDEN, \
     HTTP_400_BAD_REQUEST
 from rest_framework.authentication import BasicAuthentication,\
     SessionAuthentication
+from .info_loader import city_info
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -47,6 +48,8 @@ class AddressBookDetail(APIView):
                 "credentials": "access denied"
             }, HTTP_403_FORBIDDEN)
         data = serializers.AddressBookSerializer(address, context={'request': request}).data
+        print("city is ", address.city)
+        data["coordinate"] = city_info(address.city)
         return Response(data)
 
     def put(self, request, pk):

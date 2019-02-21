@@ -1,8 +1,5 @@
 from .models import Token
-
-
-class InvalidToken:
-    pass
+from django.http import JsonResponse
 
 
 class TokenMiddleware:
@@ -15,10 +12,15 @@ class TokenMiddleware:
         if 'HTTP_AUTHORIZATION' in request.META:
             header_value = request.META['HTTP_AUTHORIZATION']
             token_key = header_value[6:]
+
             try:
                 token = Token.objects.get(key=token_key)
+
             except Token.DoesNotExist:
-                request.auth = InvalidToken()
+                return JsonResponse({
+                    "error": "Invalid Token"
+                }, status=401)
+
             else:
                 request.user = token.user
                 request.auth = token.key
