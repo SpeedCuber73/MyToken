@@ -24,7 +24,6 @@ class InfoLoader:
             return self._city_cache[city]
 
         url = f"https://htmlweb.ru/geo/api.php?city_name={city}&json"
-        print("sending request...")
 
         try:
             data = requests.get(url).json()
