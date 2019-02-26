@@ -48,7 +48,6 @@ class AddressBookDetail(APIView):
                 "credentials": "access denied"
             }, HTTP_403_FORBIDDEN)
         data = serializers.AddressBookSerializer(address, context={'request': request}).data
-        print("city is ", address.city)
         data["coordinate"] = city_info(address.city)
         return Response(data)
 
